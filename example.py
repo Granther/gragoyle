@@ -2,8 +2,7 @@ import bhaptics_python
 import asyncio
 import time
 
-async def haptic_demo():
-    # 1. Initialization
+async def init():
     app_id = "69bf315ab739d9e6b1942b96"
     api_key = "vImyGPE7pBD74cWjJ4mm"
     app_name = "lang1"
@@ -19,29 +18,90 @@ async def haptic_demo():
     print(f"📱 Connected device info: {device_info}")
     
     # 3. Test haptic effects
-    print("\n🎮 Starting haptic effect tests...")
-    
-    values = [10] * 40
+    print("\n🎮 Starting haptic effect tests...") 
+
+async def short_sentence():
+    await init()
 
     import random
 
     nouns = ["dog", "cat", "hospital", "office", "court", "person"]
     verbs = ["vring", "glorping", "modeling", "programming"]
 
-    verbn, nounn = random.randint(0, 4), random.randint(0, 5)
+    while True:
+        verbn, nounn = random.randint(0, 3), random.randint(0, 5)
 
-    verb = verbs[verbn]+"_lang1"
-    noun = nouns[nounn]+"_lang1"
+        verb = verbs[verbn]+"_lang1"
+        noun = nouns[nounn]+"_lang1"
 
-    await bhaptics_python.play_event(event_name=noun)
-    await asyncio.sleep(1.2)
+        await bhaptics_python.play_event(event_name=noun)
+        await asyncio.sleep(1.2)
 
-    await bhaptics_python.play_event(event_name=verb)
-    await asyncio.sleep(1.2)
+        await bhaptics_python.play_event(event_name=verb)
+        await asyncio.sleep(1.2)
 
-    print("Sentence: " + nouns[nounn]+ " " + verbs[verbn])
+        guess = input("Guess: ")
+        sent = nouns[nounn] + " " + verbs[verbn]
+        if guess == sent:
+            print("Right!")
+        else:
+            print("Wrong! It was: ", sent)
+
+        time.sleep(1)
     
     return
+
+async def noun_quiz():
+    await init()
+    
+    import random
+
+    nouns = ["dog", "cat", "hospital", "office", "court", "person"]
+
+    while True:
+        nounn = random.randint(0, 5)
+        noun = nouns[nounn]+"_lang1"
+
+        await bhaptics_python.play_event(event_name=noun)
+        await asyncio.sleep(1.2)
+
+        guess = input("Guess: ")
+        word = nouns[nounn]
+        if guess == word:
+            print("Right!")
+        else:
+            print("Wrong! It was: ", word)
+
+        time.sleep(1)
+
+async def all_quiz():
+    await init()
+    
+    import random
+
+    nouns = ["dog", "cat", "hospital", "office", "court", "person"]
+    verbs = ["vring", "glorping", "modeling", "programming"]
+    alls = nouns + verbs
+
+    while True:
+        randn = random.randint(0, len(nouns) + len(verbs)-1)
+        noun = alls[randn]+"_lang1"
+
+        await bhaptics_python.play_event(event_name=noun)
+        await asyncio.sleep(1.2)
+
+        guess = input("Guess: ")
+        word = alls[randn]
+        if guess == word:
+            print("Right!")
+        else:
+            print("Wrong! It was: ", word)
+
+        time.sleep(1)
+
+async def haptic_demo():
+    
+    values = [10] * 40
 
     for word in sentence:
         await bhaptics_python.play_event(event_name=word)
@@ -79,4 +139,7 @@ async def haptic_demo():
 
 # Run the demo
 if __name__ == "__main__":
-    asyncio.run(haptic_demo())
+    #asyncio.run(haptic_demo())
+    asyncio.run(short_sentence())
+    #asyncio.run(noun_quiz())
+    #asyncio.run(all_quiz())
