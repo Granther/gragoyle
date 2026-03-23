@@ -51,6 +51,35 @@ async def short_sentence():
     
     return
 
+async def simo_sentence():
+    await init()
+
+    import random
+
+    nouns = ["dog", "cat", "hospital", "office", "court", "person"]
+    verbs = ["vring", "glorping", "modeling", "programming"]
+
+    while True:
+        verbn, nounn = random.randint(0, 3), random.randint(0, 5)
+
+        verb = verbs[verbn]+"_lang1"
+        noun = nouns[nounn]+"_lang1"
+
+        await bhaptics_python.play_event(event_name=noun)
+        await bhaptics_python.play_event(event_name=verb)
+        await asyncio.sleep(1.2)
+
+        guess = input("Guess: ")
+        sent = nouns[nounn] + " " + verbs[verbn]
+        if guess == sent:
+            print("Right!")
+        else:
+            print("Wrong! It was: ", sent)
+
+        time.sleep(1)
+    
+    return
+
 async def noun_quiz():
     await init()
     
@@ -99,6 +128,13 @@ async def all_quiz():
 
         time.sleep(1)
 
+async def test1():
+    await init()
+
+    await bhaptics_python.play_event(event_name="dog_lang1")
+    await bhaptics_python.play_event(event_name="glorping_lang1")
+    await asyncio.sleep(1.2)
+
 async def haptic_demo():
     
     values = [10] * 40
@@ -140,6 +176,6 @@ async def haptic_demo():
 # Run the demo
 if __name__ == "__main__":
     #asyncio.run(haptic_demo())
-    asyncio.run(short_sentence())
+    asyncio.run(simo_sentence())
     #asyncio.run(noun_quiz())
     #asyncio.run(all_quiz())
