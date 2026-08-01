@@ -48,13 +48,26 @@ async def play_on_vest(data):
     def get_vals(f,b):
         return [*f, *([0]*16), *b, *([0] * 16)]
     #values = [50] * 4 + [0] * 16 + [50] * 4 + [0] * 16  # Activate first 16 of 32 motors
-    f = np_data[2:6]; b = [np_data[-1], np_data[-2], np_data[0], np_data[1]]
+    f = np_data[2:6]; b = [np_data[1], np_data[0], np_data[7], np_data[6]]
     print(data, "\n", f, b)
     vals = get_vals(f, b)
     await bhaptics_python.play_dot(0, int(1000 // HZ), vals)
     await asyncio.sleep(int(1 // HZ))
 
+async def test():
+    values = [50] * 3 + [0] * 17 + [0] * 20   # Activate first 16 of 32 motors
+    await bhaptics_python.play_dot(0, 2000, values)
+    await asyncio.sleep(2.5)
+
 if __name__ == "__main__":
-    #asyncio.run(init_vest_api())
-    #main_loop()
+    asyncio.run(init_vest_api())
+    main_loop()
     asyncio.run(play_on_vest(np.arange(994, 1004)))
+    #asyncio.run(test())
+
+# On the front of the vest, 1st motor is top, far left
+# On the back, it corresponds to the 1st, so the 21st motor is top, far left too, but on back
+
+# [0, 20, 40, 60, 80, 100, 120, 140]
+# F: [40, 60, 80, 100] (1, 2, 3, 4)
+# B: [20, 0, 140, 120] (21, 22, 23, 24)
